@@ -24,7 +24,8 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private final int VIEW_TYPE_ITEM = 0, VIEW_TYPE_LOADING = 1;
     private Context context;
-        private List<MovieModel> movies;
+    private List<MovieModel> movies;
+    private final String BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w600_and_h900_bestv2";
 
     public MovieAdapter(Context context, List<MovieModel> movies) {
         this.context = context;
@@ -70,7 +71,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             MovieModel movie = movies.get(position);
             movieViewHolder.movieTitle.setText(movie.getMovieName());
             Picasso.get()
-                    .load(movie.getMovieImage())
+                    .load(BASE_IMAGE_URL+movie.getMovieImage())
                     .resize(60, 60)
                     .placeholder(R.drawable.movie_placeholder)
                     .into(movieViewHolder.movieImage);
@@ -107,8 +108,8 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             super(itemView);
             movieTitle = itemView.findViewById(R.id.movie_name);
             movieImage = itemView.findViewById(R.id.movie_image);
-
         }
+
     }
 
     public class LoadingHolder extends RecyclerView.ViewHolder {

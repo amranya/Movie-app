@@ -3,20 +3,31 @@ package com.movie.app.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by iyadz_000 on 12/1/2018.
  */
 
 public class MovieModel implements Parcelable {
 
+    @SerializedName("title")
     private String movieName;
+    @SerializedName("poster_path")
     private String movieImage;
+    @SerializedName("original_title")
     private String movieOriginalName;
+    @SerializedName("original_language")
     private String movieOriginalLanguage;
+    @SerializedName("release_date")
     private String movieReleaseDate;
+    @SerializedName("overview")
     private String movieOverview;
+    @SerializedName("popularity")
     private double moviePopularity;
+    @SerializedName("vote_average")
     private double movieAverageVote;
+    @SerializedName("vote_count")
     private int movieTotalVotes;
 
     public MovieModel() {
@@ -61,7 +72,6 @@ public class MovieModel implements Parcelable {
     public void setMovieImage(String movieImage) {
         this.movieImage = movieImage;
     }
-
     public String getMovieOriginalName() {
         return movieOriginalName;
     }

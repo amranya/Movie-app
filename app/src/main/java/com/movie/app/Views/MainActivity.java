@@ -1,5 +1,6 @@
 package com.movie.app.Views;
 
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,11 +9,14 @@ import android.widget.AbsListView;
 
 import com.movie.app.Adapter.MovieAdapter;
 import com.movie.app.Data.DataTest;
+import com.movie.app.Data.TheMovieDbData;
 import com.movie.app.Model.MovieModel;
 import com.movie.app.R;
+import com.movie.app.Utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Utils.initializeSSLContext(this);
 
         recyclerView = findViewById(R.id.my_recycler_view);
         manager = new LinearLayoutManager(this);
@@ -64,8 +70,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void getData() {
-
-        DataTest.getDataTest(this, adapter);
+        TheMovieDbData.getLastMoviesData(this, adapter);
+        //DataTest.getDataTest(this, adapter);
     }
+
+
 
 }
