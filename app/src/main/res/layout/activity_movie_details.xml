@@ -8,7 +8,8 @@
     <ImageView
         android:id="@+id/movie_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="200dp"
+        android:transitionName="movie"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/color_black"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:text="Title: "
+        android:textStyle="italic"/>
 
     <TextView
         android:id="@+id/movie_original_name"
@@ -31,7 +34,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/color_black"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:text="Original title: "
+        android:textStyle="italic"/>
 
     <TextView
         android:id="@+id/overview"
@@ -39,7 +44,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/color_black"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:text="Overview: "
+        android:textStyle="italic"/>
 
     <TextView
         android:id="@+id/release_date"
@@ -47,7 +54,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/color_black"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:text="Release date: "
+        android:textStyle="italic"/>
 
     <TextView
         android:id="@+id/popularity"
@@ -55,7 +64,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/color_black"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:text="Popularity: "
+        android:textStyle="italic"/>
 
     <TextView
         android:id="@+id/vote"
@@ -63,7 +74,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/color_black"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:text="rating: "
+        android:textStyle="italic"/>
 
     </LinearLayout>
 

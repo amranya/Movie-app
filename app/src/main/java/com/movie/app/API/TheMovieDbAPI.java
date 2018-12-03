@@ -19,5 +19,4 @@ public interface TheMovieDbAPI {
                                            @Query("sort_by") String sort_by,
                                            @Query("page") int page);
 
-
 }

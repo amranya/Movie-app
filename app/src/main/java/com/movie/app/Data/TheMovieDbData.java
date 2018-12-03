@@ -1,7 +1,6 @@
 package com.movie.app.Data;
 
 import android.content.Context;
-import android.os.Handler;
 import android.widget.Toast;
 
 import com.movie.app.API.TheMovieDbAPI;
@@ -24,10 +23,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class TheMovieDbData {
 
+    public enum Sort{
+        RELEASE_DATE_DESC, POPULARITY_DESC, VOTE_AVERAGE_DESC
+    }
+
     private static final String BASE_URL = "https://api.themoviedb.org/";
     private static final String LANGUAGE = "en-US";
     private static final String API_KEY = "0abccb29ed37027f09338ae4eca411c7";
-    private static final String SORT = "release_date.desc";
+    private static String SORT = "release_date.desc";
 
     private static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -35,59 +38,84 @@ public class TheMovieDbData {
             .build();
     private static TheMovieDbAPI theMovieDbAPI = retrofit.create(TheMovieDbAPI.class);
 
+    private static boolean isFirstLoad = true;
+    private static boolean isLoading = false;
     private static List<MovieModel> movies = new ArrayList<>();
     private static int page = 1;
 
 
     public static void getLastMoviesData(final Context ctx, final MovieAdapter adapter) {
 
-        adapter.updateList(movies);
-        Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            public void run() {
+        if(isFirstLoad){
+            adapter.updateList(movies);
+            isFirstLoad = false;
+        }
 
-                movies.add(null);
-                adapter.notifyItemInserted(movies.size() - 1);
+        if(!isLoading) {
 
-            }
-        };
-        handler.post(runnable);
+            isLoading = true;
 
-
-        Call<MovieDiscoverModel> call = theMovieDbAPI.getLastMovies(API_KEY, LANGUAGE, SORT, page);
-        call.enqueue(new Callback<MovieDiscoverModel>() {
-            @Override
-            public void onResponse(Call<MovieDiscoverModel> call, Response<MovieDiscoverModel> response) {
-
-                if (response != null) {
-
-                    Toast.makeText(ctx, "page number: " + String.valueOf(page), Toast.LENGTH_SHORT).show();
-
-                    movies.remove(movies.size() - 1);
-                    adapter.notifyItemRemoved(movies.size());
-
-                    List<MovieModel> moviesNew = response.body().getMovies();
-                    movies.addAll(moviesNew);
-
-                    adapter.notifyItemInserted(movies.size() - 1);
-
-                    page++;
+            adapter.addProgressBar();
 
 
-                } else {
-                    Toast.makeText(ctx, "no more data to display", Toast.LENGTH_SHORT).show();
+            Call<MovieDiscoverModel> call = theMovieDbAPI.getLastMovies(API_KEY, LANGUAGE, SORT, page);
+            call.enqueue(new Callback<MovieDiscoverModel>() {
+                @Override
+                public void onResponse(Call<MovieDiscoverModel> call, Response<MovieDiscoverModel> response) {
+
+                    isLoading = false;
+
+                    if (response != null) {
+
+                        //Toast.makeText(ctx, "page number: " + String.valueOf(page), Toast.LENGTH_SHORT).show();
+
+                        movies.remove(movies.size() - 1);
+                        adapter.notifyItemRemoved(movies.size() - 1);
+
+                        List<MovieModel> moviesNew = response.body().getMovies();
+                        movies.addAll(moviesNew);
+
+                        adapter.notifyDataSetChanged();
+
+                        page++;
+
+
+                    } else {
+                        Toast.makeText(ctx, "no more data to display", Toast.LENGTH_SHORT).show();
+                    }
+
+
                 }
 
+                @Override
+                public void onFailure(Call<MovieDiscoverModel> call, Throwable t) {
 
-            }
-
-            @Override
-            public void onFailure(Call<MovieDiscoverModel> call, Throwable t) {
-
-            }
-        });
+                }
+            });
+        }
 
     }
 
+    public static void filter(Context ctx, MovieAdapter adapter, Sort sort){
+
+        page = 1;
+        movies.clear();
+        adapter.notifyDataSetChanged();
+
+        switch (sort){
+
+            case RELEASE_DATE_DESC: SORT = "release_date.desc";
+                break;
+            case POPULARITY_DESC: SORT = "popularity.desc";
+                break;
+            case VOTE_AVERAGE_DESC: SORT = "vote_average.desc";
+                break;
+
+        }
+
+        getLastMoviesData(ctx, adapter);
+
+
+    }
 
 }

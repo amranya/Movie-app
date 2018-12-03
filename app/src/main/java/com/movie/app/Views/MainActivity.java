@@ -5,7 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.AbsListView;
+import android.widget.Toast;
 
 import com.movie.app.Adapter.MovieAdapter;
 import com.movie.app.Data.DataTest;
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 totalItems = manager.getItemCount();
                 scrollOutItems = manager.findFirstVisibleItemPosition();
 
-                if (isScrolling && (currentItems + scrollOutItems == totalItems)) {
+                if (isScrolling && (currentItems + scrollOutItems >= totalItems)) {
                     isScrolling = false;
                     getData();
 
@@ -74,6 +78,27 @@ public class MainActivity extends AppCompatActivity {
         //DataTest.getDataTest(this, adapter);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.popularity){
+            TheMovieDbData.filter(this, adapter, TheMovieDbData.Sort.POPULARITY_DESC);
+            Toast.makeText(this, "popularity", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.rating){
+            TheMovieDbData.filter(this, adapter, TheMovieDbData.Sort.VOTE_AVERAGE_DESC);
+            Toast.makeText(this, "rating", Toast.LENGTH_SHORT).show();
+        }
+        else if (id == R.id.release){
+            TheMovieDbData.filter(this, adapter, TheMovieDbData.Sort.RELEASE_DATE_DESC);
+            Toast.makeText(this, "release", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

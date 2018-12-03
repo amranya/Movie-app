@@ -1,6 +1,10 @@
 package com.movie.app.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,7 @@ import android.widget.TextView;
 
 import com.movie.app.Model.MovieModel;
 import com.movie.app.R;
+import com.movie.app.Views.MovieDetailsActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -46,7 +51,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.movie_row, parent, false);
-            return new MovieViewHolder(view);
+            return new MovieViewHolder(view, context);
 
         } else if (viewType == VIEW_TYPE_LOADING) {
 
@@ -99,15 +104,44 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
+    public void addProgressBar(){
+
+        Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            public void run() {
+
+                movies.add(null);
+                notifyItemInserted(movies.size() - 1);
+
+            }
+        };
+        handler.post(runnable);
+
+    }
+
     public class MovieViewHolder extends RecyclerView.ViewHolder {
 
         TextView movieTitle;
         ImageView movieImage;
 
-        public MovieViewHolder(View itemView) {
+        public MovieViewHolder(View itemView, final Context ctx) {
             super(itemView);
             movieTitle = itemView.findViewById(R.id.movie_name);
             movieImage = itemView.findViewById(R.id.movie_image);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MovieModel movie = movies.get(getAdapterPosition());
+                    Intent intent = new Intent(ctx, MovieDetailsActivity.class);
+                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) ctx,
+                            movieImage,
+                            "movie");
+                    intent.putExtra("movie", movie);
+                    ctx.startActivity(intent, options.toBundle());
+                }
+            });
+
+
         }
 
     }

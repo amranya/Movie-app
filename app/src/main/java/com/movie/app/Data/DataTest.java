@@ -16,42 +16,60 @@ import java.util.List;
 
 public class DataTest {
 
+    private static boolean isFirstLoad = true;
+    private static boolean isLoading = false;
     private static List<MovieModel> movies = new ArrayList<>();
     private static int page = 1;
 
+
     public static void getDataTest(final Context ctx, final MovieAdapter adapter) {
 
-        adapter.updateList(movies);
-        movies.add(null);
-        adapter.notifyItemInserted(movies.size() - 1);
+        if(isFirstLoad){
+            adapter.updateList(movies);
+            isFirstLoad = false;
+        }
 
-        Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            public void run() {
+        if(!isLoading){
 
-                Toast.makeText(ctx, "page number: " + String.valueOf(page), Toast.LENGTH_SHORT).show();
+            isLoading = true;
 
-                movies.remove(movies.size() - 1);
-                adapter.notifyItemRemoved(movies.size());
+            adapter.addProgressBar();
 
-                //populating adapter test
+            Handler handler = new Handler();
+            final Runnable runnable = new Runnable() {
+                public void run() {
 
-                for (int i = 0; i < 10; i++) {
+                    isLoading = false;
+                    Toast.makeText(ctx, "page number: " + String.valueOf(page), Toast.LENGTH_SHORT).show();
 
-                    MovieModel movie = new MovieModel();
-                    movie.setMovieName("movie " + i + " page " + page);
-                    movie.setMovieImage("http://i.imgur.com/DvpvklR.png");
+                    movies.remove(movies.size() - 1);
+                    adapter.notifyItemRemoved(movies.size());
 
-                    movies.add(movie);
+                    //populating adapter test
 
-                    adapter.notifyItemInserted(movies.size() - 1);
+                    for (int i = 0; i < 10; i++) {
 
+                        MovieModel movie = new MovieModel();
+                        movie.setMovieName("movie " + i + " page " + page);
+                        movie.setMovieImage("http://i.imgur.com/DvpvklR.png");
+
+                        movies.add(movie);
+
+                        adapter.notifyItemInserted(movies.size() - 1);
+
+                    }
+
+                    page++;
                 }
+            };
+            handler.postDelayed(runnable, 10000);
 
-                page++;
-            }
-        };
-        handler.postDelayed(runnable, 5000);
+        }
+
+
+
+
+
 
 
     }

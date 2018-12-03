@@ -18,7 +18,8 @@
             <ImageView
                 android:id="@+id/movie_image"
                 android:layout_width="60dp"
-                android:layout_height="60dp"/>
+                android:layout_height="60dp"
+                android:transitionName="movie"/>
 
             <TextView
                 android:id="@+id/movie_name"
