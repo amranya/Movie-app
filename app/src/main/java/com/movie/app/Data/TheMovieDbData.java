@@ -83,8 +83,7 @@ public class TheMovieDbData {
                     } else {
                         Toast.makeText(ctx, "no more data to display", Toast.LENGTH_SHORT).show();
                     }
-
-
+                    
                 }
 
                 @Override

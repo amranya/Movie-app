@@ -6,5 +6,5 @@
 
     <color name="color_black">#000000</color>
     <color name="color_card">#ffffff</color>
-    <color name="recycler_view_color">#d6d1d1</color>
+    <color name="recycler_view_color">#e6e3e3</color>
 </resources>

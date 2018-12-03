@@ -89,15 +89,15 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.popularity){
             TheMovieDbData.filter(this, adapter, TheMovieDbData.Sort.POPULARITY_DESC);
-            Toast.makeText(this, "popularity", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "by popularity", Toast.LENGTH_SHORT).show();
         }
         else if (id == R.id.rating){
             TheMovieDbData.filter(this, adapter, TheMovieDbData.Sort.VOTE_AVERAGE_DESC);
-            Toast.makeText(this, "rating", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "by top voted", Toast.LENGTH_SHORT).show();
         }
         else if (id == R.id.release){
             TheMovieDbData.filter(this, adapter, TheMovieDbData.Sort.RELEASE_DATE_DESC);
-            Toast.makeText(this, "release", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "by newest", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }

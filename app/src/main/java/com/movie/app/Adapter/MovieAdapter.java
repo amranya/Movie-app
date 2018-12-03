@@ -3,6 +3,7 @@ package com.movie.app.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
@@ -30,7 +31,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private final int VIEW_TYPE_ITEM = 0, VIEW_TYPE_LOADING = 1;
     private Context context;
     private List<MovieModel> movies;
-    private final String BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w600_and_h900_bestv2";
+    public static final String BASE_IMAGE_URL = "https://image.tmdb.org/t/p/w600_and_h900_bestv2";
 
     public MovieAdapter(Context context, List<MovieModel> movies) {
         this.context = context;
@@ -75,10 +76,11 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             MovieModel movie = movies.get(position);
             movieViewHolder.movieTitle.setText(movie.getMovieName());
+
             Picasso.get()
-                    .load(BASE_IMAGE_URL+movie.getMovieImage())
-                    .resize(60, 60)
+                    .load(BASE_IMAGE_URL + movie.getMovieImage())
                     .placeholder(R.drawable.movie_placeholder)
+                    .fit()
                     .into(movieViewHolder.movieImage);
 
         } else if (holder instanceof LoadingHolder) {
@@ -87,10 +89,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             loadingHolder.progressBar.setIndeterminate(true);
 
-
         }
-
-
     }
 
     @Override
@@ -104,7 +103,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
-    public void addProgressBar(){
+    public void addProgressBar() {
 
         Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
@@ -131,13 +130,23 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     MovieModel movie = movies.get(getAdapterPosition());
                     Intent intent = new Intent(ctx, MovieDetailsActivity.class);
-                    ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) ctx,
-                            movieImage,
-                            "movie");
                     intent.putExtra("movie", movie);
-                    ctx.startActivity(intent, options.toBundle());
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        String transitionName = "movie"+getAdapterPosition();
+                        movieImage.setTransitionName(transitionName);
+                        intent.putExtra("transitionName", transitionName);
+                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) ctx,
+                                movieImage,
+                                movieImage.getTransitionName());
+                        ctx.startActivity(intent, options.toBundle());
+                    }
+                    else{ctx.startActivity(intent);}
+
+
                 }
             });
 

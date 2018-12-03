@@ -5,10 +5,10 @@
         android:id="@+id/card_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:backgroundTint="@color/color_card"
         card_view:cardCornerRadius="10dp"
-        card_view:contentPadding="10dp">
+        card_view:contentPadding="5dp">
 
         <RelativeLayout
             android:id="@+id/relative_layout"
@@ -17,18 +17,18 @@
 
             <ImageView
                 android:id="@+id/movie_image"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:transitionName="movie"/>
+                android:layout_width="@dimen/card_movie_image_width"
+                android:layout_height="@dimen/card_movie_image_height"/>
 
             <TextView
                 android:id="@+id/movie_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/movie_image"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/color_black"
-                android:textSize="20sp"
+                android:textSize="@dimen/card_text_size"
                 android:textStyle="bold"/>
 
         </RelativeLayout>
